@@ -27,10 +27,16 @@ services:
       resources:
         limits:
           memory: 512M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
-  adminer:
+  postgres-web:
     image: adminer:latest
-    container_name: adminer
+    container_name: postgres-web
     restart: unless-stopped
     networks:
       - frontend
@@ -39,9 +45,18 @@ services:
       resources:
         limits:
           memory: 128M
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080 > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=frontend"
-      - "traefik.http.routers.adminer.rule=Host(`${SERVICE}.${DOMAIN}`)"
-      - "traefik.http.routers.adminer.entrypoints=web"
-      - "traefik.http.services.adminer.loadbalancer.server.port=8080"
+      - "traefik.http.routers.postgres-web.rule=Host(`${SERVICE}.${DOMAIN}`)"
+      - "traefik.http.routers.postgres-web.entrypoints=web"
+      - "traefik.http.services.postgres-web.loadbalancer.server.port=8080"
