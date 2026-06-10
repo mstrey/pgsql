@@ -41,6 +41,8 @@ services:
     networks:
       - frontend
       - backend
+    volumes:
+      - ./adminer.ini:/usr/local/etc/php/conf.d/adminer.ini
     deploy:
       resources:
         limits:
