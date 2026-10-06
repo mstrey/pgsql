@@ -53,3 +53,6 @@ ALTER DATABASE nome_da_app_db OWNER TO nome_da_app_user;
 
 8. Estrutura do Volume   
 O `docker-compose.yml` utiliza o driver local com a opção bind para mapear o volume de forma absoluta no host. Isso garante que os dados do banco não fiquemno SDCard local em `/var/lib/docker/volumes` e permaneçam no HD externo. Isso evita que o SDCard acabe degradando cedo por alta utilização.
+
+9. Interface web
+O projeto disponibiliza uma instância do LibreDB Studio para acessar o banco por interface web. Ele já está com as configurações necessárias para o Traefik fazer o redirecionamento das rotas de acesso. 
