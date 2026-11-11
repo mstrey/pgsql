@@ -11,6 +11,8 @@ volumes:
       type: none
       o: bind
       device: /mnt/storage/postgres_data
+  libredb_data:
+    name: libredb_data
 
 services:
   postgres:
@@ -46,6 +48,8 @@ services:
       - REQUIRE_AUTH=true 
       - ADMIN_EMAIL=${ADMIN_EMAIL}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+    volumes:
+      - libredb_data:/app/data
     deploy:
       resources:
         limits:
